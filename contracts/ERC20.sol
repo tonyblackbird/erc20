@@ -106,20 +106,20 @@ contract ERC20 {
     }
 
 
-    function mint(uint256 amount, address _address) external onlyOwner returns (bool success) {
+    function mint(address _address, uint256 amount) external onlyOwner returns (bool success) {
         totalSupplyOfToken += amount;
         balances[_address] += amount;
 
-        emit Mint(msg.sender, amount);
+        emit Mint(_address, amount);
 
         return true;
     }
 
-    function burn(uint256 amount) external onlyOwner returns (bool success) {
+    function burn(address _from, uint256 amount) external onlyOwner returns (bool success) {
         totalSupplyOfToken -= amount;
-        balances[msg.sender] -= amount;
+        balances[_from] -= amount;
 
-        emit Burn(msg.sender, amount);
+        emit Burn(_from, amount);
 
         return true;
     }
