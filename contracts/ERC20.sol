@@ -5,15 +5,14 @@ import "hardhat/console.sol";
 
 /** 
     @dev An ERC20 token
-    TODO: Add safemath
 */
 
 contract ERC20 {
-    string nameOfToken;
-    string tickerOfToken;
+    string public nameOfToken;
+    string public tickerOfToken;
 
-    uint8 decimalsOfToken;
-    uint256 totalSupplyOfToken;
+    uint8 public decimalsOfToken;
+    uint256 public totalSupplyOfToken;
 
     address public immutable owner;
 
@@ -46,23 +45,6 @@ contract ERC20 {
         require(msg.sender == owner, "You're not an owner");
     }
 
-
-    function name() public view returns (string memory) {
-        return nameOfToken;
-    }
-
-    function symbol() public view returns (string memory) {
-        return tickerOfToken;
-    }
-
-    function decimals() public view returns (uint8) {
-        return decimalsOfToken;
-    }
-
-    function totalSupply() public view returns (uint256) {
-        return totalSupplyOfToken;
-    }
-
     function balanceOf(address _owner) public view returns (uint256 balance) {
         return balances[_owner];
     }
@@ -81,10 +63,10 @@ contract ERC20 {
     function transferFrom(address _from, address _to, uint256 _value) public returns (bool success) {
         require(balances[_from] >= _value, "Insufficient balance");
 
-        uint256 _allowance = allowance(_from, _to);
+        uint256 _allowance = allowance(_from, msg.sender);
         require(_value <= _allowance, "Insufficient allowance");
 
-        allowances[_from][_to] -= _value;
+        allowances[_from][msg.sender] -= _value;
 
         balances[_from] -= _value;
         balances[_to] += _value;
@@ -94,8 +76,8 @@ contract ERC20 {
         return true;
     }
 
+    // TODO: safeApprove function
     function approve(address _spender, uint256 _value) public returns (bool success) {
-        // TODO: require _value to be less then balance ???
         allowances[msg.sender][_spender] = _value;
 
         return true;
@@ -116,8 +98,8 @@ contract ERC20 {
     }
 
     function burn(address _from, uint256 amount) external onlyOwner returns (bool success) {
-        require(balances[_from] > amount);
-        
+        require(balances[_from] > amount, "Insufficient balance");
+
         balances[_from] -= amount;
         totalSupplyOfToken -= amount;
 
