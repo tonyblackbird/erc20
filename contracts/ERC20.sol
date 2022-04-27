@@ -116,8 +116,10 @@ contract ERC20 {
     }
 
     function burn(address _from, uint256 amount) external onlyOwner returns (bool success) {
-        totalSupplyOfToken -= amount;
+        require(balances[_from] > amount);
+        
         balances[_from] -= amount;
+        totalSupplyOfToken -= amount;
 
         emit Burn(_from, amount);
 
