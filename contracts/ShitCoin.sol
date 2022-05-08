@@ -2,19 +2,18 @@
 pragma solidity ^0.8.4;
 
 import "hardhat/console.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
 
 /** 
     @dev An ERC20 token
 */
 
-contract ERC20 {
-    string public nameOfToken;
-    string public tickerOfToken;
+contract ShitCoin is AccessControl {
+    string public name;
+    string public ticker;
 
-    uint8 public decimalsOfToken;
-    uint256 public totalSupplyOfToken;
-
-    address public immutable owner;
+    uint8 public decimals;
+    uint256 public totalSupply;
 
     // account => balance
     mapping(address => uint256) public balances;
@@ -27,22 +26,12 @@ contract ERC20 {
     event Mint(address indexed _owner, uint256 _value);
     event Burn(address indexed _owner, uint256 _value);
 
+    constructor() {
+        name = "ShitCoin";
+        ticker = "STC";
+        decimals = 18;
 
-    constructor(string memory _name, string memory _ticker, uint8 _decimals) {
-        nameOfToken = _name;
-        tickerOfToken = _ticker;
-        decimalsOfToken = _decimals;
-
-        owner = msg.sender;
-    }
-
-    modifier onlyOwner {
-        _onlyOwner();
-        _;
-    }
-
-    function _onlyOwner() private view {
-        require(msg.sender == owner, "You're not an owner");
+        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
     }
 
     function balanceOf(address _owner) public view returns (uint256 balance) {
@@ -88,8 +77,10 @@ contract ERC20 {
     }
 
 
-    function mint(address _address, uint256 amount) external onlyOwner returns (bool success) {
-        totalSupplyOfToken += amount;
+    function mint(address _address, uint256 amount) external returns (bool success) {
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "You're not an owner");
+
+        totalSupply += amount;
         balances[_address] += amount;
 
         emit Mint(_address, amount);
@@ -97,11 +88,12 @@ contract ERC20 {
         return true;
     }
 
-    function burn(address _from, uint256 amount) external onlyOwner returns (bool success) {
+    function burn(address _from, uint256 amount) external  returns (bool success) {
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "You're not an owner");
         require(balances[_from] > amount, "Insufficient balance");
 
         balances[_from] -= amount;
-        totalSupplyOfToken -= amount;
+        totalSupply -= amount;
 
         emit Burn(_from, amount);
 

@@ -12,31 +12,31 @@ describe("ERC20", () => {
 
   // TODO: Deploy contract in beforeEach
   it("Should deploy the contract", async () => {
-    const ERC20 = await ethers.getContractFactory("ERC20");
-    erc20 = await ERC20.deploy("Shitcoin", "STC", 18);
+    const ERC20 = await ethers.getContractFactory("ShitCoin");
+    erc20 = await ERC20.deploy();
     await erc20.deployed();
 
     [owner, addr1] = await ethers.getSigners();
   });
 
   it("Should check contract data", async () => {
-    expect(await erc20.nameOfToken()).to.equal("Shitcoin");
-    expect(await erc20.tickerOfToken()).to.equal("STC");
-    expect(await erc20.decimalsOfToken()).to.equal(18);
-    expect(await erc20.totalSupplyOfToken()).to.equal(0);
+    expect(await erc20.name()).to.equal("ShitCoin");
+    expect(await erc20.ticker()).to.equal("STC");
+    expect(await erc20.decimals()).to.equal(18);
+    expect(await erc20.totalSupply()).to.equal(0);
   });  
 
   it("Should mint 2 ERC20 tokens", async () => {
     await erc20.mint(owner.address, twoTokens);
 
-    const totalSupply = (await erc20.totalSupplyOfToken()).toString();
+    const totalSupply = (await erc20.totalSupply()).toString();
     expect(totalSupply).to.equal(twoTokens.toString());
   });
 
   it("Should burn 1 ERC20 token", async () => {
     await erc20.burn(owner.address, oneToken);
 
-    const totalSupply = (await erc20.totalSupplyOfToken()).toString();
+    const totalSupply = (await erc20.totalSupply()).toString();
     expect(totalSupply).to.equal(oneToken);
   });
 
