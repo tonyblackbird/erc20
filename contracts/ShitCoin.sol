@@ -10,7 +10,7 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 
 contract ShitCoin is AccessControl {
     string public name;
-    string public ticker;
+    string public symbol;
 
     uint8 public decimals;
     uint256 public totalSupply;
@@ -28,7 +28,7 @@ contract ShitCoin is AccessControl {
 
     constructor() {
         name = "ShitCoin";
-        ticker = "STC";
+        symbol = "STC";
         decimals = 18;
 
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);

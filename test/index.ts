@@ -21,7 +21,7 @@ describe("ERC20", () => {
 
   it("Should check contract data", async () => {
     expect(await erc20.name()).to.equal("ShitCoin");
-    expect(await erc20.ticker()).to.equal("STC");
+    expect(await erc20.symbol()).to.equal("STC");
     expect(await erc20.decimals()).to.equal(18);
     expect(await erc20.totalSupply()).to.equal(0);
   });  
