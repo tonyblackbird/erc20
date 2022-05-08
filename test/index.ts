@@ -3,7 +3,26 @@ import { expect } from "chai";
 import { BigNumber, Contract, utils } from "ethers";
 import { ethers } from "hardhat";
 
-describe("ERC20", () => {
+describe("Farming contract", () => {
+  let farming: Contract;
+  let owner: SignerWithAddress;
+  let addr1: SignerWithAddress;
+
+  beforeEach(async () => {
+    const Farming = await ethers.getContractFactory("STCFarming");
+    farming = await Farming.deploy();
+    await farming.deployed();
+
+    [owner, addr1] = await ethers.getSigners();
+  });
+
+  it("Should stake", async () => {
+
+  });
+});
+
+/*
+describe("ShitCoin", () => {
   let erc20: Contract;
   let owner: SignerWithAddress, addr1: SignerWithAddress;
 
@@ -97,3 +116,4 @@ describe("ERC20", () => {
     });
   });
 });
+*/

@@ -12,7 +12,7 @@ async function main() {
   // If this script is run directly using `node` you may want to call compile
   // manually to make sure everything is compiled
   // await hre.run('compile');
-
+  /*
   // We get the contract to deploy
   const ERC20 = await ethers.getContractFactory("ShitCoin");
   const erc20 = await ERC20.deploy();
@@ -21,7 +21,7 @@ async function main() {
 
   console.log("ShitCoin deployed to:", erc20.address);
 
-  /*const WETH = await ethers.getContractFactory("WETH");
+  const WETH = await ethers.getContractFactory("WETH");
   const weth = await WETH.deploy();
 
   await weth.deployed();
