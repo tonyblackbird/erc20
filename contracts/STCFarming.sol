@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: SEE LICENSE IN LICENSE
 pragma solidity ^0.8.4;
 
+import "hardhat/console.sol";
 import { IERC20 } from "@openzeppelin/contracts/interfaces/IERC20.sol";
 import { ShitCoin } from "./ShitCoin.sol";
 
@@ -23,7 +24,8 @@ contract STCFarming {
             claim();
         }
 
-        lpToken.approve(address(this), amount);
+        // Why it does not work with approve in function?
+        //lpToken.approve(address(this), amount);
         lpToken.transferFrom(msg.sender, address(this), amount);
 
         _deposits[msg.sender].amount = amount;

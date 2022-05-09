@@ -1,23 +1,61 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
 import { expect } from "chai";
-import { BigNumber, Contract, utils } from "ethers";
-import { ethers } from "hardhat";
+import { BigNumber, Contract, utils, Signer, providers } from "ethers";
+import { ethers, network  } from "hardhat";
+import {} from "@nomiclabs/hardhat-ethers";
+import { formatEther, parseEther } from "ethers/lib/utils";
 
 describe("Farming contract", () => {
   let farming: Contract;
   let owner: SignerWithAddress;
   let addr1: SignerWithAddress;
 
+  const lpHolderAddress = "0x1108996f4A5048dFEf3352a5aE56a6467a283F1B";
+  let lpHolder: providers.JsonRpcSigner;
+  let lpToken: Contract;
+  
+
+  before(async () => {
+    [owner, addr1] = await ethers.getSigners();  
+
+    await network.provider.request({
+      method: "hardhat_impersonateAccount",
+      params: [lpHolderAddress],
+    });
+
+    await network.provider.send("hardhat_setBalance", [
+      lpHolderAddress,
+      "0xffffffffffffffffff"
+    ]);
+
+    lpHolder = ethers.provider.getSigner(lpHolderAddress);
+    lpToken = await ethers.getContractAt("IERC20", "0x8BAe696C6D18BC0532C49856fFC313e1e60DE97a");
+
+    await lpToken.connect(lpHolder).transfer(owner.address, parseEther("5"));
+    
+    await network.provider.request({
+      method: "hardhat_stopImpersonatingAccount",
+      params: [lpHolderAddress],
+    });
+  });
+
   beforeEach(async () => {
     const Farming = await ethers.getContractFactory("STCFarming");
     farming = await Farming.deploy();
     await farming.deployed();
+  });
 
-    [owner, addr1] = await ethers.getSigners();
+  it("Should deposit WETH", async () => {
+
+  });
+
+  it("Should widthdraw WETH", async () => {
+
   });
 
   it("Should stake", async () => {
-
+    await lpToken.approve(farming.address, parseEther("5"));
+    await farming.stake(parseEther("5"));
   });
 });
 
