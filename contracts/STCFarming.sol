@@ -59,9 +59,9 @@ contract STCFarming {
     }
 
     function calculateRewards(address user) public view returns(uint256) {
-        uint256 timeDifference = block.timestamp - _deposits[user].timestamp;
+        require(_deposits[user].timestamp != 0, "The user hasn't deposited");
 
-        // todo: check calculations on floating point 
-        return((timeDifference / 52 weeks) * 120 / 100);
+        uint256 timeDifference = block.timestamp - _deposits[user].timestamp;
+        return((timeDifference * 1e18 / 52 weeks) * 20 / 100);
     }
 }

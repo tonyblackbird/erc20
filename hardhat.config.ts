@@ -29,6 +29,7 @@ const config: HardhatUserConfig = {
       chainId: 4,
       forking: {
         url: process.env.RINKEBY_URL || "",
+        blockNumber: 10651416
       }
     },
     ropsten: {
