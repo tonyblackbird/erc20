@@ -27,6 +27,13 @@ async function main() {
   await weth.deployed();
 
   console.log("WETH deployed to:", weth.address);*/
+
+  const STCFarming = await ethers.getContractFactory("STCFarming");
+  const farming = await STCFarming.deploy();
+
+  await farming.deployed();
+
+  console.log("STCFarming deployed to:", farming.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

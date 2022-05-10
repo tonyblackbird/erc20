@@ -24,8 +24,7 @@ contract STCFarming {
             claim();
         }
 
-        // Why it does not work with approve in function?
-        //lpToken.approve(address(this), amount);
+        // TODO: require(allowance > amount);
         lpToken.transferFrom(msg.sender, address(this), amount);
 
         _deposits[msg.sender].amount = amount;
