@@ -113,14 +113,6 @@ describe("Farming contract", () => {
 
       await lpToken.approve(farming.address, parseEther("1"));
       await farming.stake(parseEther("1"));
-      
-      // Another way to wind time
-      /*
-      const blockNumBefore = await ethers.provider.getBlockNumber();
-      const blockBefore = await ethers.provider.getBlock(blockNumBefore);
-      const timestampBefore = blockBefore.timestamp;
-      await ethers.provider.send("evm_mine", [timestampBefore + 52 * week]);
-      */
 
       const week = 7 * 24 * 60 * 60;
       await ethers.provider.send('evm_increaseTime', [52 * week]);
