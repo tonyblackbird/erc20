@@ -22,13 +22,13 @@ contract STCFarming {
 
     function stake(uint256 amount) public {
         if(_deposits[msg.sender].amount > 0) {
-            withdraw(_deposits[msg.sender].amount);
+            claim();
         }
 
         require(lpToken.allowance(msg.sender, address(this)) >= amount);
         lpToken.transferFrom(msg.sender, address(this), amount);
 
-        _deposits[msg.sender].amount = amount;
+        _deposits[msg.sender].amount = _deposits[msg.sender].amount + amount;
         _deposits[msg.sender].timestamp = block.timestamp;
 
         emit Stake(msg.sender, amount);
